@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sol The Brew House - Production Website
 
-## Getting Started
+A premium, cinematic digital experience for Sol The Brew House, Shimla. This website is designed to communicate the transition from a serene lounge by day to a high-energy club by night.
 
-First, run the development server:
+## 🚀 Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Frontend**: Next.js 15 (App Router), TypeScript, Tailwind CSS
+- **Animations**: Framer Motion
+- **Database**: MySQL via Prisma ORM
+- **Icons**: Lucide React
+- **Deployment**: Optimized for Vercel
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎨 Design System
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Color Palette
+- **Charcoal Black** (`#0a0a0a`): Primary background, creating a sophisticated, dark-mode aesthetic.
+- **Warm Cream** (`#fdfbf7`): Primary foreground/text, providing a softer, more premium feel than pure white.
+- **Amber/Bronze** (`#c5a059`): Brand accent color used for CTAs, highlights, and primary branding.
+- **Himalayan Slate** (`#4a5568`): Secondary accent for muted elements and borders.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Typography
+- **Headings**: Playfair Display (Elegant Serif)
+- **Body**: Montserrat (Clean Modern Sans-Serif)
 
-## Learn More
+## 🛠️ Key Features
 
-To learn more about Next.js, take a look at the following resources:
+### Public Experience
+- **Cinematic Homepage**: Storytelling flow with scroll-based animations and a Day $\rightarrow$ Night visual transition.
+- **Dynamic Menu**: High-end editorial presentation of Food and Craft Brews.
+- **Immersive Gallery**: Masonry layout showcasing the venue's atmosphere.
+- **Step-by-Step Reservations**: A friction-less booking flow with real-time confirmation.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Admin CMS
+- **Content Manager**: Drag-and-drop reordering of homepage sections.
+- **Media Library**: Centralized asset management for all images and videos.
+- **Catalog Management**: Full CRUD for Menu items and House Brews.
+- **Booking Engine**: Management interface for pending and confirmed reservations.
+- **Site Settings**: Centralized control for business hours, contact info, and SEO.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📦 Installation & Setup
 
-## Deploy on Vercel
+1. **Clone the repository**
+   \`\`\`bash
+   git clone <repo-url>
+   cd sol-website
+   \`\`\`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Install dependencies**
+   \`\`\`bash
+   npm install
+   \`\`\`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. **Environment Configuration**
+   Copy `.env.example` to `.env` and update your credentials:
+   \`\`\`env
+   DATABASE_URL="mysql://user:password@localhost:3306/sol_db"
+   NEXTAUTH_SECRET="your-secret"
+   NEXTAUTH_URL="http://localhost:3000"
+   \`\`\`
+
+4. **Database Setup**
+   \`\`\`bash
+   npx prisma migrate dev --name init
+   \`\`\`
+
+5. **Run the Development Server**
+   \`\`\`bash
+   npm run dev
+   \`\`\`
+
+## 📁 Project Structure
+- \`/app\`: Next.js App Router (Public & Admin routes).
+- \`/components\`: Atomic UI components, Layouts, and Feature blocks.
+- \`/lib\`: Shared utilities and Prisma client.
+- \`/prisma\`: Database schema and migrations.
+- \`/public\`: Static assets and robots.txt.
+- \`/styles\`: Global CSS and design tokens.
