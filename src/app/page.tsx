@@ -8,6 +8,7 @@ import { SolExperience } from "@/components/features/SolExperience";
 import { BrewedAtSol } from "@/components/features/BrewedAtSol";
 import { FoodAtSol } from "@/components/features/FoodAtSol";
 import { DayNightTransition } from "@/components/features/DayNightTransition";
+import { Button } from "@/components/ui/Button";
 
 export default function Home() {
   return (

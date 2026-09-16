@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { MapPin, Phone, Mail, Instagram, Facebook, Twitter } from "lucide-react";
+import { MapPin, Phone, Mail, Share2 } from "lucide-react";
 
 export const Footer = () => {
   return (
@@ -19,9 +19,9 @@ export const Footer = () => {
               Experience the magic of the Himalayas from the heart of the city.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors"><Instagram size={20} /></a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors"><Facebook size={20} /></a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors"><Twitter size={20} /></a>
+              <a href="#" className="text-muted-foreground hover:text-primary transition-colors"><Share2 size={20} /></a>
+              <a href="#" className="text-muted-foreground hover:text-primary transition-colors"><Share2 size={20} /></a>
+              <a href="#" className="text-muted-foreground hover:text-primary transition-colors"><Share2 size={20} /></a>
             </div>
           </div>
 
@@ -65,6 +65,6 @@ export const Footer = () => {
           </div>
         </div>
       </Container>
-    </section>
+    </footer>
   );
 };
