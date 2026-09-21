@@ -2,29 +2,32 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Trash2, Edit3, Search, Filter, Beer } from "lucide-react";
+import { Plus, Trash2, Edit3, Search } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { cn } from "@/lib/utils";
 
-interface BrewItem {
+interface Brew {
   id: string;
   name: string;
   style: string;
+  description: string;
   abv: string;
   ibu: string;
-  description: string;
   isAvailable: boolean;
   isFeatured: boolean;
 }
 
-const MOCK_BREWS: BrewItem[] = [
-  { id: "b1", name: "Himalayan Gold", style: "Golden Ale", abv: "4.5%", ibu: "25", description: "Crisp and refreshing with citrus notes", isAvailable: true, isFeatured: true },
-  { id: "b2", name: "Midnight Peak", style: "Stout", abv: "6.2%", ibu: "40", description: "Deep roasted coffee and chocolate", isAvailable: true, isFeatured: false },
+const MOCK_BREWS: Brew[] = [
+  { id: "b1", name: "Himsuvi", style: "Helles Lager", description: "A crisp, golden lager inspired by the mountains.", abv: "4.5%", ibu: "18", isAvailable: true, isFeatured: true },
+  { id: "b2", name: "Mango", style: "Fruit Beer", description: "Tropical fusion with real mango infusion.", abv: "4.8%", ibu: "12", isAvailable: true, isFeatured: false },
+  { id: "b3", name: "German Wheat", style: "Weissbier", description: "Classic wheat beer with banana and clove notes.", abv: "5.2%", ibu: "15", isAvailable: true, isFeatured: true },
+  { id: "b4", name: "Coffee Stout", style: "Imperial Stout", description: "Deep roasted flavors of chocolate and coffee.", abv: "6.5%", ibu: "35", isAvailable: true, isFeatured: false },
 ];
 
-export default function BrewsManager() {
+export default function BrewManager() {
   const [brews, setBrews] = useState(MOCK_BREWS);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingBrew, setEditingBrew] = useState<BrewItem | null>(null);
+  const [editingBrew, setEditingBrew] = useState<Brew | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSave = (e: React.FormEvent, data: any) => {
@@ -49,12 +52,9 @@ export default function BrewsManager() {
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-3">
-          <Beer className="text-primary" size={32} />
-          <div>
-            <h1 className="text-3xl font-serif font-bold text-zinc-900">Brew Management</h1>
-            <p className="text-zinc-500">Manage your in-house craft brew collection.</p>
-          </div>
+        <div>
+          <h1 className="text-3xl font-serif font-bold text-zinc-900">Brew House Management</h1>
+          <p className="text-zinc-500">Manage your signature craft brews and specifications.</p>
         </div>
         <Button variant="primary" className="rounded-none flex gap-2" onClick={() => { setEditingBrew(null); setIsModalOpen(true); }}>
           <Plus size={18} /> Add Brew
@@ -72,9 +72,6 @@ export default function BrewsManager() {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <Button variant="outline" className="rounded-none flex gap-2">
-          <Filter size={18} /> Filter
-        </Button>
       </div>
 
       <div className="bg-white border border-zinc-200 overflow-hidden">
@@ -83,8 +80,7 @@ export default function BrewsManager() {
             <tr>
               <th className="px-6 py-4">Brew Name</th>
               <th className="px-6 py-4">Style</th>
-              <th className="px-6 py-4">ABV</th>
-              <th className="px-6 py-4">IBU</th>
+              <th className="px-6 py-4">ABV / IBU</th>
               <th className="px-6 py-4">Status</th>
               <th className="px-6 py-4 text-right">Actions</th>
             </tr>
@@ -95,10 +91,9 @@ export default function BrewsManager() {
                 <td className="px-6 py-4">
                   <p className="font-medium text-zinc-900">{brew.name}</p>
                   <p className="text-xs text-zinc-400 truncate max-w-xs">{brew.description}</p>
-                </td>
+                </div>
                 <td className="px-6 py-4 text-zinc-600">{brew.style}</td>
-                <td className="px-6 py-4 font-medium text-zinc-900">{brew.abv}</td>
-                <td className="px-6 py-4 text-zinc-600">{brew.ibu}</td>
+                <td className="px-6 py-4 font-medium text-zinc-900">{brew.abv} / {brew.ibu}</td>
                 <td className="px-6 py-4">
                   <span className={cn(
                     "px-2 py-1 rounded-full text-[10px] font-bold uppercase",
@@ -135,9 +130,9 @@ export default function BrewsManager() {
               <form onSubmit={(e) => handleSave(e, {
                 name: (e.target as any).name.value,
                 style: (e.target as any).style.value,
+                description: (e.target as any).description.value,
                 abv: (e.target as any).abv.value,
                 ibu: (e.target as any).ibu.value,
-                description: (e.target as any).description.value,
                 isAvailable: (e.target as any).isAvailable.checked,
                 isFeatured: (e.target as any).isFeatured.checked,
               })} className="space-y-6">
@@ -146,22 +141,22 @@ export default function BrewsManager() {
                     <label className="text-xs uppercase tracking-widest text-zinc-500 font-medium">Brew Name</label>
                     <input name="name" defaultValue={editingBrew?.name} required className="w-full bg-zinc-50 border border-zinc-200 p-3 text-sm outline-none focus:border-primary" />
                   </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs uppercase tracking-widest text-zinc-500 font-medium">Style</label>
+                    <input name="style" defaultValue={editingBrew?.style} required className="w-full bg-zinc-50 border border-zinc-200 p-3 text-sm outline-none focus:border-primary" />
+                  </div>
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="flex flex-col gap-2">
-                      <label className="text-xs uppercase tracking-widest text-zinc-500 font-medium">Style</label>
-                      <input name="style" defaultValue={editingBrew?.style} required className="w-full bg-zinc-50 border border-zinc-200 p-3 text-sm outline-none focus:border-primary" />
-                    </div>
                     <div className="flex flex-col gap-2">
                       <label className="text-xs uppercase tracking-widest text-zinc-500 font-medium">ABV (%)</label>
                       <input name="abv" defaultValue={editingBrew?.abv} required className="w-full bg-zinc-50 border border-zinc-200 p-3 text-sm outline-none focus:border-primary" />
                     </div>
+                    <div className="flex flex-col gap-2">
+                      <label className="text-xs uppercase tracking-widest text-zinc-500 font-medium">IBU</label>
+                      <input name="ibu" defaultValue={editingBrew?.ibu} required className="w-full bg-zinc-50 border border-zinc-200 p-3 text-sm outline-none focus:border-primary" />
+                    </div>
                   </div>
                   <div className="flex flex-col gap-2">
-                    <label className="text-xs uppercase tracking-widest text-zinc-500 font-medium">IBU</label>
-                    <input name="ibu" defaultValue={editingBrew?.ibu} className="w-full bg-zinc-50 border border-zinc-200 p-3 text-sm outline-none focus:border-primary" />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs uppercase tracking-widest text-zinc-500 font-medium">Description / Tasting Notes</label>
+                    <label className="text-xs uppercase tracking-widest text-zinc-500 font-medium">Description</label>
                     <textarea name="description" defaultValue={editingBrew?.description} rows={3} className="w-full bg-zinc-50 border border-zinc-200 p-3 text-sm outline-none focus:border-primary resize-none" />
                   </div>
                   <div className="flex gap-6">
@@ -186,4 +181,8 @@ export default function BrewsManager() {
       </AnimatePresence>
     </div>
   );
+}
+
+function cn(...classes: any[]) {
+  return classes.filter(Boolean).join(" ");
 }

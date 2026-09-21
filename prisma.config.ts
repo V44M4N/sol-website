@@ -1,6 +1,9 @@
 import { definePrismaConfig } from "prisma/config";
 
 export default definePrismaConfig({
+  orm: {
+    schema: "src/prisma/schema.prisma",
+  },
   skills: {
     agents: ["claude", "cursor", "agents", "devin"],
   },

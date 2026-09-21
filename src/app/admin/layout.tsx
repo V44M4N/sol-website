@@ -18,14 +18,33 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 
-const NAV_ITEMS = [
-  { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-  { name: "Content", href: "/admin/content", icon: FileText },
-  { name: "Media Library", href: "/admin/media", icon: ImageIcon },
-  { name: "Menu", href: "/admin/menu", icon: Utensils },
-  { name: "Brews", href: "/admin/brews", icon: Beer },
-  { name: "Reservations", href: "/admin/reservations", icon: Calendar },
-  { name: "Settings", href: "/admin/settings", icon: Settings },
+const NAV_GROUPS = [
+  {
+    label: "CAFE",
+    items: [
+      { name: "Cafe Content", href: "/admin/content?experience=CAFE", icon: FileText },
+      { name: "Cafe Photos", href: "/admin/media?experience=CAFE", icon: ImageIcon },
+      { name: "Cafe Menu", href: "/admin/menu?experience=CAFE", icon: Utensils },
+    ],
+  },
+  {
+    label: "THE BREW HOUSE",
+    items: [
+      { name: "Brew House Content", href: "/admin/content?experience=BREW_HOUSE", icon: FileText },
+      { name: "Beer Photos", href: "/admin/media?experience=BREW_HOUSE", icon: ImageIcon },
+      { name: "Brews", href: "/admin/brews", icon: Beer },
+      { name: "Brew House Menu", href: "/admin/menu?experience=BREW_HOUSE", icon: Utensils },
+    ],
+  },
+  {
+    label: "SHARED",
+    items: [
+      { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
+      { name: "Reservations", href: "/admin/reservations", icon: Calendar },
+      { name: "Settings", href: "/admin/settings", icon: Settings },
+      { name: "Media Library", href: "/admin/media", icon: ImageIcon },
+    ],
+  },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -48,25 +67,34 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </button>
         </div>
 
-        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-          {NAV_ITEMS.map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2 rounded-md transition-colors text-sm font-medium",
-                  isActive
-                    ? "bg-primary text-primary-foreground"
-                    : "hover:bg-zinc-800 hover:text-zinc-200"
-                )}
-              >
-                <item.icon size={18} />
-                {item.name}
-              </Link>
-            );
-          })}
+        <nav className="flex-1 p-4 space-y-8 overflow-y-auto">
+          {NAV_GROUPS.map((group) => (
+            <div key={group.label} className="space-y-2">
+              <p className="px-3 text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-500 mb-2">
+                {group.label}
+              </p>
+              <div className="space-y-1">
+                {group.items.map((item) => {
+                  const isActive = pathname.startsWith(item.href.split('?')[0]);
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={cn(
+                        "flex items-center gap-3 px-3 py-2 rounded-md transition-colors text-sm font-medium",
+                        isActive
+                          ? "bg-primary text-primary-foreground"
+                          : "hover:bg-zinc-800 hover:text-zinc-200"
+                      )}
+                    >
+                      <item.icon size={18} />
+                      {item.name}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </nav>
 
         <div className="p-4 border-t border-zinc-800">

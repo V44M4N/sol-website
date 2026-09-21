@@ -13,6 +13,12 @@ enum Role {
   EDITOR
 }
 
+enum ExperienceType {
+  CAFE
+  BREW_HOUSE
+  SHARED
+}
+
 enum ReservationStatus {
   PENDING
   CONFIRMED
@@ -80,6 +86,7 @@ model PageSection {
   order       Int
   isVisible   Boolean     @default(true)
   isDraft     Boolean     @default(false)
+  experience  ExperienceType @default(SHARED)
   publishedAt DateTime?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
@@ -92,6 +99,7 @@ model Media {
   altText     String?
   caption     String?
   folder      String?
+  experience  ExperienceType @default(SHARED)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -100,6 +108,7 @@ model MenuCategory {
   id        String     @id @default(cuid())
   name      String
   order     Int
+  experience ExperienceType @default(SHARED)
   items     MenuItem[]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
@@ -115,6 +124,7 @@ model MenuItem {
   image       String?
   isFeatured  Boolean      @default(false)
   isAvailable Boolean      @default(true)
+  experience  ExperienceType @default(SHARED)
   dietaryTags String?      // e.g., "Veg, Vegan, Gluten-Free"
   allergens   String?
   createdAt   DateTime     @default(now())
@@ -132,6 +142,7 @@ model Brew {
   image       String?
   isAvailable Boolean  @default(true)
   isFeatured  Boolean  @default(false)
+  experience  ExperienceType @default(BREW_HOUSE)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
@@ -145,11 +156,12 @@ model Event {
   artist      String?
   image       String?
   category    String?
+  experience  ExperienceType @default(SHARED)
   bookingInfo String?  @db.Text
   ticketLink  String?
   status      String    @default("UPCOMING") // UPCOMING, LIVE, PAST, CANCELLED
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Offer {
@@ -161,6 +173,7 @@ model Offer {
   terms       String?  @db.Text
   startDate   DateTime
   endDate     DateTime
+  experience ExperienceType @default(SHARED)
   cta         String?
   isActive    Boolean   @default(true)
   createdAt   DateTime  @default(now())
@@ -177,6 +190,7 @@ model Reservation {
   guestCount  Int
   requests    String?           @db.Text
   status      ReservationStatus @default(PENDING)
+  experience  ExperienceType @default(SHARED)
   reservationId String          @unique
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
@@ -202,11 +216,12 @@ model Review {
   name      String
   content   String   @db.Text
   rating    Int
-  source    String?  // "Google", "TripAdvisor", etc.
-  date      DateTime @default(now())
+  source      String?  // "Google", "TripAdvisor", etc.
+  experience ExperienceType @default(SHARED)
+  date        DateTime @default(now())
   isFeatured Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model AuditLog {

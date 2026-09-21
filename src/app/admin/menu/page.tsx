@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Trash2, Edit3, Search, Filter } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { cn } from "@/lib/utils";
 
 interface MenuItem {
   id: string;
@@ -14,15 +16,19 @@ interface MenuItem {
   description: string;
   isAvailable: boolean;
   isFeatured: boolean;
+  experience: "CAFE" | "BREW_HOUSE" | "SHARED";
 }
 
 const MOCK_MENU: MenuItem[] = [
-  { id: "m1", name: "Artisanal Cheese Platter", category: "Small Plates", price: "850", description: "Selection of imported and local cheeses", isAvailable: true, isFeatured: true },
-  { id: "m2", name: "Truffle Fries", category: "Small Plates", price: "450", description: "Hand-cut potatoes with truffle oil", isAvailable: true, isFeatured: false },
-  { id: "m3", name: "Sol Fusion Burger", category: "Main Course", price: "750", description: "Premium wagyu beef with sol sauce", isAvailable: true, isFeatured: true },
+  { id: "m1", name: "Artisanal Cheese Platter", category: "Small Plates", price: "850", description: "Selection of imported and local cheeses", isAvailable: true, isFeatured: true, experience: "CAFE" },
+  { id: "m2", name: "Truffle Fries", category: "Small Plates", price: "450", description: "Hand-cut potatoes with truffle oil", isAvailable: true, isFeatured: false, experience: "BREW_HOUSE" },
+  { id: "m3", name: "Sol Fusion Burger", category: "Main Course", price: "750", description: "Premium wagyu beef with sol sauce", isAvailable: true, isFeatured: true, experience: "BREW_HOUSE" },
 ];
 
 export default function MenuManager() {
+  const searchParams = useSearchParams();
+  const experience = searchParams.get("experience") || "SHARED";
+  
   const [items, setItems] = useState(MOCK_MENU);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
@@ -33,7 +39,7 @@ export default function MenuManager() {
     if (editingItem) {
       setItems(items.map(i => i.id === editingItem.id ? { ...editingItem, ...data } : i));
     } else {
-      setItems([...items, { ...data, id: Math.random().toString(36).substr(2, 9) }]);
+      setItems([...items, { ...data, id: Math.random().toString(36).substr(2, 9), experience }]);
     }
     setIsModalOpen(false);
     setEditingItem(null);
@@ -45,14 +51,25 @@ export default function MenuManager() {
     }
   };
 
-  const filteredItems = items.filter(i => i.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  const filteredItems = items.filter(i => 
+    i.experience === experience && 
+    i.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const experienceLabels: Record<string, { title: string, desc: string }> = {
+    CAFE: { title: "Cafe Menu Management", desc: "Update your morning coffee and light bites offerings." },
+    BREW_HOUSE: { title: "Brew House Menu Management", desc: "Update your craft beer and gastro pub fare." },
+    SHARED: { title: "General Menu Management", desc: "Manage overall culinary offerings." },
+  };
+
+  const currentLabel = experienceLabels[experience] || experienceLabels.SHARED;
 
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-serif font-bold text-zinc-900">Menu Management</h1>
-          <p className="text-zinc-500">Update your culinary offerings and pricing.</p>
+          <h1 className="text-3xl font-serif font-bold text-zinc-900">{currentLabel.title}</h1>
+          <p className="text-zinc-500">{currentLabel.desc}</p>
         </div>
         <Button variant="primary" className="rounded-none flex gap-2" onClick={() => { setEditingItem(null); setIsModalOpen(true); }}>
           <Plus size={18} /> Add Item
@@ -87,39 +104,47 @@ export default function MenuManager() {
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-100">
-            {filteredItems.map((item) => (
-              <tr key={item.id} className="hover:bg-zinc-50 transition-colors group">
-                <td className="px-6 py-4">
-                  <p className="font-medium text-zinc-900">{item.name}</p>
-                  <p className="text-xs text-zinc-400 truncate max-w-xs">{item.description}</p>
-                </div>
-                <td className="px-6 py-4 text-zinc-600">{item.category}</td>
-                <td className="px-6 py-4 font-medium text-zinc-900">₹{item.price}</td>
-                <td className="px-6 py-4">
-                  <span className={cn(
-                    "px-2 py-1 rounded-full text-[10px] font-bold uppercase",
-                    item.isAvailable ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"
-                  )}>
-                    {item.isAvailable ? "Available" : "Sold Out"}
-                  </span>
-                </div>
-                <td className="px-6 py-4 text-right space-x-2">
-                  <button onClick={() => { setEditingItem(item); setIsModalOpen(true); }} className="p-2 text-zinc-400 hover:text-primary transition-colors">
-                    <Edit3 size={16} />
-                  </button>
-                  <button onClick={() => deleteItem(item.id)} className="p-2 text-zinc-400 hover:text-red-600 transition-colors">
-                    <Trash2 size={16} />
-                  </button>
-                </div>
+            {filteredItems.length > 0 ? (
+              filteredItems.map((item) => (
+                <tr key={item.id} className="hover:bg-zinc-50 transition-colors group">
+                  <td className="px-6 py-4">
+                    <p className="font-medium text-zinc-900">{item.name}</p>
+                    <p className="text-xs text-zinc-400 truncate max-w-xs">{item.description}</p>
+                  </div>
+                  <td className="px-6 py-4 text-zinc-600">{item.category}</td>
+                  <td className="px-6 py-4 font-medium text-zinc-900">₹{item.price}</td>
+                  <td className="px-6 py-4">
+                    <span className={cn(
+                      "px-2 py-1 rounded-full text-[10px] font-bold uppercase",
+                      item.isAvailable ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"
+                    )}>
+                      {item.isAvailable ? "Available" : "Sold Out"}
+                    </span>
+                  </div>
+                  <td className="px-6 py-4 text-right space-x-2">
+                    <button onClick={() => { setEditingItem(item); setIsModalOpen(true); }} className="p-2 text-zinc-400 hover:text-primary transition-colors">
+                      <Edit3 size={16} />
+                    </button>
+                    <button onClick={() => deleteItem(item.id)} className="p-2 text-zinc-400 hover:text-red-600 transition-colors">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5} className="px-6 py-12 text-center text-zinc-400 italic">
+                  No items found for {experience} experience.
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
 
       <AnimatePresence>
         {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-out z-50 flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setIsModalOpen(false)} />
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}

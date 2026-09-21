@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion, Reorder } from "framer-motion";
 import { GripVertical, Eye, EyeOff, Trash2, Edit3, Plus } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { cn } from "@/lib/utils";
 
 interface PageSection {
   id: string;
@@ -11,18 +13,22 @@ interface PageSection {
   title: string;
   isVisible: boolean;
   order: number;
+  experience: "CAFE" | "BREW_HOUSE" | "SHARED";
 }
 
 const MOCK_SECTIONS: PageSection[] = [
-  { id: "s1", type: "HERO", title: "Main Hero", isVisible: true, order: 1 },
-  { id: "s2", type: "IMAGE_TEXT", title: "Above Shimla", isVisible: true, order: 2 },
-  { id: "s3", type: "GALLERY", title: "The Sol Experience", isVisible: true, order: 3 },
-  { id: "s4", type: "BREW_SHOWCASE", title: "Brewed at Sol", isVisible: true, order: 4 },
-  { id: "s5", type: "MENU_HIGHLIGHTS", title: "Food at Sol", isVisible: true, order: 5 },
-  { id: "s6", type: "VIDEO", title: "Day Night Transition", isVisible: true, order: 6 },
+  { id: "s1", type: "HERO", title: "Main Hero", isVisible: true, order: 1, experience: "SHARED" },
+  { id: "s2", type: "IMAGE_TEXT", title: "Above Shimla", isVisible: true, order: 2, experience: "SHARED" },
+  { id: "s3", type: "GALLERY", title: "The Sol Experience", isVisible: true, order: 3, experience: "SHARED" },
+  { id: "s4", type: "BREW_SHOWCASE", title: "Brewed at Sol", isVisible: true, order: 4, experience: "BREW_HOUSE" },
+  { id: "s5", type: "MENU_HIGHLIGHTS", title: "Food at Sol", isVisible: true, order: 5, experience: "SHARED" },
+  { id: "s6", type: "VIDEO", title: "Day Night Transition", isVisible: true, order: 6, experience: "SHARED" },
 ];
 
 export default function ContentManager() {
+  const searchParams = useSearchParams();
+  const experience = searchParams.get("experience") || "SHARED";
+  
   const [sections, setSections] = useState(MOCK_SECTIONS);
   const [editingId, setEditingId] = useState<string | null>(null);
 
@@ -36,12 +42,22 @@ export default function ContentManager() {
     }
   };
 
+  const filteredSections = sections.filter(s => s.experience === experience || s.experience === "SHARED");
+
+  const experienceLabels: Record<string, { title: string, desc: string }> = {
+    CAFE: { title: "Cafe Content Management", desc: "Curate the visual storytelling for the Cafe experience." },
+    BREW_HOUSE: { title: "Brew House Content Management", desc: "Manage the energetic flow of the Brew House experience." },
+    SHARED: { title: "Global Content Management", desc: "Manage sections shared across both experiences." },
+  };
+
+  const currentLabel = experienceLabels[experience] || experienceLabels.SHARED;
+
   return (
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-serif font-bold text-zinc-900">Content Manager</h1>
-          <p className="text-zinc-500">Reorder and manage the homepage layout.</p>
+          <h1 className="text-3xl font-serif font-bold text-zinc-900">{currentLabel.title}</h1>
+          <p className="text-zinc-500">{currentLabel.desc}</p>
         </div>
         <Button variant="primary" className="rounded-none flex gap-2" onClick={() => {}}>
           <Plus size={18} /> Add Section
@@ -55,8 +71,16 @@ export default function ContentManager() {
             <span>Drag to reorder</span>
           </div>
 
-          <Reorder.Group axis="y" values={sections} onReorder={setSections} className="space-y-3">
-            {sections.map((section) => (
+          <Reorder.Group axis="y" values={filteredSections} onReorder={(newOrder) => {
+            // Update the original sections list while preserving the order of filtered ones
+            const updated = [...sections];
+            const indices = filteredSections.map(s => updated.findIndex(orig => orig.id === s.id));
+            newOrder.forEach((s, i) => {
+              updated[indices[i]].order = i;
+            });
+            setSections(updated);
+          }} className="space-y-3">
+            {filteredSections.map((section) => (
               <Reorder.Item
                 key={section.id}
                 value={section}
@@ -68,7 +92,7 @@ export default function ContentManager() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-zinc-900">{section.title}</p>
-                    <p className="text-[10px] uppercase tracking-tighter text-zinc-400">{section.type}</p>
+                    <p className="text-[10px] uppercase tracking-tighter text-zinc-400">{section.type} {section.experience !== 'SHARED' && `(${section.experience})`}</p>
                   </div>
                 </div>
 

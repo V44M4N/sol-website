@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ImageIcon, Film, Trash2, Upload, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { cn } from "@/lib/utils";
 
 interface MediaAsset {
   id: string;
@@ -12,21 +14,26 @@ interface MediaAsset {
   type: "image" | "video";
   altText: string;
   createdAt: string;
+  experience: "CAFE" | "BREW_HOUSE" | "SHARED";
 }
 
 const MOCK_MEDIA: MediaAsset[] = [
-  { id: "1", url: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=400", type: "image", altText: "Sol Main View", createdAt: "2026-09-01" },
-  { id: "2", url: "https://images.unsplash.com/photo-1590059391630-586d37d93a40?auto=format&fit=crop&q=80&w=400", type: "image", altText: "Shimla Panoramic", createdAt: "2026-09-02" },
-  { id: "3", url: "https://images.unsplash.com/photo-1470337458703-7579997a8b7f?auto=format&fit=crop&q=80&w=400", type: "image", altText: "Golden Hour Brew", createdAt: "2026-09-03" },
-  { id: "4", url: "https://images.unsplash.com/photo-1514525253344-f85655999952?auto=format&fit=crop&q=80&w=400", type: "image", altText: "Nightlife DJ", createdAt: "2026-09-04" },
+  { id: "1", url: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=400", type: "image", altText: "Sol Main View", createdAt: "2026-09-01", experience: "SHARED" },
+  { id: "2", url: "https://images.unsplash.com/photo-1590059391630-586d37d93a40?auto=format&fit=crop&q=80&w=400", type: "image", altText: "Shimla Panoramic", createdAt: "2026-09-02", experience: "CAFE" },
+  { id: "3", url: "https://images.unsplash.com/photo-1470337458703-7579997a8b7f?auto=format&fit=crop&q=80&w=400", type: "image", altText: "Golden Hour Brew", createdAt: "2026-09-03", experience: "BREW_HOUSE" },
+  { id: "4", url: "https://images.unsplash.com/photo-1514525253344-f85655999952?auto=format&fit=crop&q=80&w=400", type: "image", altText: "Nightlife DJ", createdAt: "2026-09-04", experience: "BREW_HOUSE" },
 ];
 
 export default function MediaLibrary() {
+  const searchParams = useSearchParams();
+  const experience = searchParams.get("experience") || "SHARED";
+  
   const [assets, setAssets] = useState<MediaAsset[]>(MOCK_MEDIA);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredAssets = assets.filter(asset =>
+    (asset.experience === experience || asset.experience === "SHARED") &&
     asset.altText.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -34,12 +41,20 @@ export default function MediaLibrary() {
     setAssets(assets.filter(a => a.id !== id));
   };
 
+  const experienceLabels: Record<string, { title: string, desc: string }> = {
+    CAFE: { title: "Cafe Media Gallery", desc: "Manage photographs and videos for the Cafe experience." },
+    BREW_HOUSE: { title: "Brew House Media Gallery", desc: "Manage photographs and videos for the Brew House experience." },
+    SHARED: { title: "Global Media Library", desc: "Manage all images and videos used across the site." },
+  };
+
+  const currentLabel = experienceLabels[experience] || experienceLabels.SHARED;
+
   return (
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-serif font-bold text-zinc-900">Media Library</h1>
-          <p className="text-zinc-500">Manage all images and videos used across the site.</p>
+          <h1 className="text-3xl font-serif font-bold text-zinc-900">{currentLabel.title}</h1>
+          <p className="text-zinc-500">{currentLabel.desc}</p>
         </div>
         <Button
           variant="primary"
@@ -65,40 +80,46 @@ export default function MediaLibrary() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
         <AnimatePresence>
-          {filteredAssets.map((asset) => (
-            <motion.div
-              key={asset.id}
-              layout
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="group relative aspect-square bg-zinc-200 overflow-hidden border border-zinc-200"
-            >
-              <img src={asset.url} alt={asset.altText} className="w-full h-full object-cover" />
+          {filteredAssets.length > 0 ? (
+            filteredAssets.map((asset) => (
+              <motion.div
+                key={asset.id}
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className="group relative aspect-square bg-zinc-200 overflow-hidden border border-zinc-200"
+              >
+                <img src={asset.url} alt={asset.altText} className="w-full h-full object-cover" />
 
-              <div className="absolute top-2 right-2">
-                <div className={cn(
-                  "p-1 rounded bg-black/50 text-white",
-                  asset.type === 'image' ? "text-xs" : "text-xs"
-                )}>
-                  {asset.type === 'image' ? <ImageIcon size={12} /> : <Film size={12} />}
+                <div className="absolute top-2 right-2">
+                  <div className={cn(
+                    "p-1 rounded bg-black/50 text-white",
+                    asset.type === 'image' ? "text-xs" : "text-xs"
+                  )}>
+                    {asset.type === 'image' ? <ImageIcon size={12} /> : <Film size={12} />}
+                  </div>
                 </div>
-              </div>
 
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
-                <p className="text-white text-xs font-medium truncate mb-2">{asset.altText}</p>
-                <div className="flex justify-between items-center">
-                  <span className="text-[10px] text-zinc-400">{asset.createdAt}</span>
-                  <button
-                    onClick={() => deleteAsset(asset.id)}
-                    className="p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-                  >
-                    <Trash2 size={14} />
-                  </button>
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
+                  <p className="text-white text-xs font-medium truncate mb-2">{asset.altText}</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] text-zinc-400">{asset.createdAt}</span>
+                    <button
+                      onClick={() => deleteAsset(asset.id)}
+                      className="p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))
+          ) : (
+            <div className="col-span-full py-24 text-center text-zinc-400 italic">
+              No assets found for the {experience} experience.
+            </div>
+          )}
         </AnimatePresence>
       </div>
 
@@ -144,6 +165,14 @@ export default function MediaLibrary() {
                       className="w-full bg-zinc-50 border border-zinc-200 p-3 text-sm outline-none focus:border-primary transition-colors"
                       placeholder="Describe the image..."
                     />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs uppercase tracking-widest text-zinc-500 font-medium">Experience</label>
+                    <select className="w-full bg-zinc-50 border border-zinc-200 p-3 text-sm outline-none focus:border-primary transition-colors">
+                      <option value="SHARED">Shared (Global)</option>
+                      <option value="CAFE">Cafe</option>
+                      <option value="BREW_HOUSE">The Brew House</option>
+                    </select>
                   </div>
                   <div className="flex flex-col gap-2">
                     <label className="text-xs uppercase tracking-widest text-zinc-500 font-medium">Folder/Category</label>

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { cn } from "@/lib/utils"; // Need to create this util
+import { cn } from "@/lib/utils";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,10 +16,13 @@ export const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = [
-    { name: "About", href: "/about" },
-    { name: "Food", href: "/food" },
-    { name: "Brews", href: "/brews" },
+  const primaryLinks = [
+    { name: "Cafe", href: "/cafe" },
+    { name: "The Brew House", href: "/brew-house" },
+  ];
+
+  const secondaryLinks = [
+    { name: "Menu", href: "/food" },
     { name: "Events", href: "/events" },
     { name: "Gallery", href: "/gallery" },
     { name: "Contact", href: "/contact" },
@@ -39,17 +42,34 @@ export const Navbar = () => {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className="text-xs uppercase tracking-widest font-medium hover:text-primary transition-colors"
-            >
-              {link.name}
-            </Link>
-          ))}
+          {/* Primary Destinations */}
+          <div className="flex items-center gap-6 border-r border-border/50 pr-6 mr-2">
+            {primaryLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-xs uppercase tracking-widest font-bold hover:text-primary transition-colors text-foreground"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+
+          {/* Secondary Links */}
+          <div className="flex items-center gap-6">
+            {secondaryLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-xs uppercase tracking-widest font-medium hover:text-primary transition-colors text-muted-foreground"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+
           <Link href="/reservations">
-            <Button variant="primary" size="sm">
+            <Button variant="primary" size="sm" className="rounded-none">
               Book a Table
             </Button>
           </Link>
@@ -63,19 +83,37 @@ export const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="absolute top-full left-0 w-full bg-background border-b border-border p-6 flex flex-col gap-6 md:hidden animate-in fade-in slide-in-from-top-5">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className="text-sm uppercase tracking-widest font-medium hover:text-primary"
-              onClick={() => setIsOpen(false)}
-            >
-              {link.name}
-            </Link>
-          ))}
-          <Link href="/reservations">
-            <Button variant="primary" className="w-full">
+        <div className="absolute top-full left-0 w-full bg-background border-b border-border p-6 flex flex-col gap-8 md:hidden animate-in fade-in slide-in-from-top-5">
+          <div className="flex flex-col gap-4">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold">Experiences</p>
+            {primaryLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-lg font-serif hover:text-primary transition-colors"
+                onClick={() => setIsOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+
+          <div className="flex flex-col gap-4 border-t border-border pt-6">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold">Explore</p>
+            {secondaryLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-sm uppercase tracking-widest font-medium hover:text-primary"
+                onClick={() => setIsOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+
+          <Link href="/reservations" className="mt-4">
+            <Button variant="primary" className="w-full rounded-none">
               Book a Table
             </Button>
           </Link>
