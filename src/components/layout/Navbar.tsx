@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X, Phone } from "lucide-react";
+import { ChevronDown, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { business } from "@/lib/sol";
@@ -40,13 +40,14 @@ export function Navbar() {
           />
         </Link>
         <button
-          className="mobile-toggle icon-button"
-          aria-label={open ? "Close menu" : "Open menu"}
+          className="mobile-toggle"
+          aria-label={open ? "Close explore menu" : "Explore Sol"}
           aria-expanded={open}
           aria-controls="main-navigation"
           onClick={() => setOpen(!open)}
         >
-          {open ? <X /> : <Menu />}
+          <span>Explore</span>
+          <ChevronDown size={18} aria-hidden="true" />
         </button>
         <nav
           id="main-navigation"

@@ -388,6 +388,25 @@ button:focus-visible {
 }
 .mobile-toggle {
   display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 10px 0 10px 16px;
+  border: 0;
+  background: transparent;
+  color: #d6b67d;
+  font-size: 15px;
+  font-weight: 600;
+}
+.mobile-toggle:hover {
+  color: #fff;
+}
+.mobile-toggle svg {
+  transition: transform .25s ease;
+}
+.mobile-toggle[aria-expanded="true"] svg {
+  transform: rotate(180deg);
 }
 .skip-link {
   position: fixed;
