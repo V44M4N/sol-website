@@ -1,58 +1,94 @@
 "use client";
-
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Container } from "@/components/ui/Container";
-
-export const DayNightTransition = () => {
-  const targetRef = useRef(null);
+import Image from "next/image";
+import { useRef, useState } from "react";
+import {
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+} from "framer-motion";
+import { venue } from "@/lib/sol";
+const moments = [
+  {
+    name: "Day",
+    image: "_loungearea1-large",
+    text: "Settle into the Brew House. Food, conversation and a fresh pour.",
+  },
+  {
+    name: "Golden hour",
+    image: "_goldenhour1-large",
+    text: "Take it to the terrace. A brew in hand, Shimla in view.",
+  },
+  {
+    name: "Night",
+    image: "_outsidelounge1-large",
+    text: "Stay for the evening. The Brew House finds its after-dark rhythm.",
+  },
+];
+export function DayNightTransition() {
+  const [active, setActive] = useState(0);
+  const section = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
   const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start end", "end start"],
+    target: section,
+    offset: ["start center", "end center"],
   });
-
-  const xOffset = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-
+  useMotionValueEvent(scrollYProgress, "change", (value) => {
+    if (!reduced) setActive(Math.min(2, Math.floor(value * 3)));
+  });
   return (
-    <section ref={targetRef} className="relative h-[150vh] w-full bg-background">
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* Night Side (Bottom Layer) */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1514525253344-f85655999952?auto=format&fit=crop&q=80&w=2070"
-            alt="Sol Nightlife"
-            className="w-full h-full object-cover"
+    <section ref={section} className="day-night">
+      <div className="moment-images">
+        {moments.map((m, i) => (
+          <Image
+            key={m.name}
+            src={venue(m.image)}
+            alt={m.name + " at Sol The Brew House"}
+            fill
+            sizes="100vw"
+            quality={90}
+            className={i === active ? "active" : ""}
           />
-          <div className="absolute inset-0 bg-black/40" />
+        ))}
+      </div>
+      <div className="moment-shade" />
+      <div className="section-wrap moment-copy">
+        <p className="eyebrow">04 / One Sol. Every hour.</p>
+        <h2>
+          The Brew House.
+          <br />
+          <em>From day into night.</em>
+        </h2>
+        <div className="moment-tabs" role="tablist" aria-label="Time of day">
+          {moments.map((m, i) => (
+            <button
+              key={m.name}
+              role="tab"
+              id={`moment-tab-${i}`}
+              aria-selected={i === active}
+              aria-controls="moment-panel"
+              onClick={() => setActive(i)}
+              onKeyDown={(e) => {
+                if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+                  e.preventDefault();
+                  const n = (i + (e.key === "ArrowRight" ? 1 : 2)) % 3;
+                  setActive(n);
+                  document.getElementById(`moment-tab-${n}`)?.focus();
+                }
+              }}
+              tabIndex={i === active ? 0 : -1}
+            >
+              {m.name}
+            </button>
+          ))}
         </div>
-
-        {/* Day Side (Top Layer - Slides away) */}
-        <motion.div
-          style={{ x: xOffset }}
-          className="absolute inset-0 z-10 overflow-hidden border-r-4 border-primary"
+        <p
+          id="moment-panel"
+          role="tabpanel"
+          aria-labelledby={`moment-tab-${active}`}
         >
-          <img
-            src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=2070"
-            alt="Sol Day"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-white/10" />
-        </motion.div>
-
-        {/* Overlay Text */}
-        <motion.div
-          style={{ opacity }}
-          className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none"
-        >
-          <Container className="text-center">
-            <h2 className="text-5xl md:text-8xl font-serif text-foreground tracking-tight">
-              Lounge by Day.<br />
-              <span className="text-primary italic">Club by Night.</span>
-            </h2>
-          </Container>
-        </motion.div>
+          {moments[active].text}
+        </p>
       </div>
     </section>
   );
-};
+}

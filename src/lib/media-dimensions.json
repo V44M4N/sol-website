@@ -1,0 +1,266 @@
+{
+  "/media/BrewHouse/Brews/Allbeer-v2.webp": {
+    "width": 1536,
+    "height": 1024
+  },
+  "/media/BrewHouse/Brews/Allbeer.webp": {
+    "width": 1536,
+    "height": 1024
+  },
+  "/media/BrewHouse/Brews/Belgian_Wit-v2.webp": {
+    "width": 975,
+    "height": 1613
+  },
+  "/media/BrewHouse/Brews/Belgian_Wit.webp": {
+    "width": 375,
+    "height": 1024
+  },
+  "/media/BrewHouse/Brews/ChocolateCoffee_Stout-v2.webp": {
+    "width": 992,
+    "height": 1586
+  },
+  "/media/BrewHouse/Brews/ChocolateCoffee_Stout.webp": {
+    "width": 372,
+    "height": 1024
+  },
+  "/media/BrewHouse/Brews/German_Lager-v2.webp": {
+    "width": 983,
+    "height": 1600
+  },
+  "/media/BrewHouse/Brews/German_Lager.webp": {
+    "width": 386,
+    "height": 1024
+  },
+  "/media/BrewHouse/Brews/Mango_Ale-v2.webp": {
+    "width": 974,
+    "height": 1615
+  },
+  "/media/BrewHouse/Brews/Mango_Ale.webp": {
+    "width": 376,
+    "height": 1024
+  },
+  "/media/Gallery/SolCafe/solcafe_inside1.webp": {
+    "width": 1024,
+    "height": 640
+  },
+  "/media/Gallery/SolCafe/solcafe_inside2.webp": {
+    "width": 1024,
+    "height": 640
+  },
+  "/media/Gallery/SolCafe/solcafe_lounge1.webp": {
+    "width": 1024,
+    "height": 640
+  },
+  "/media/Gallery/SolCafe/solcafe_lounge2.webp": {
+    "width": 1024,
+    "height": 640
+  },
+  "/media/Gallery/SolCafe/solcafe_lounge3.webp": {
+    "width": 1024,
+    "height": 640
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse.webp": {
+    "width": 1122,
+    "height": 1402
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse2.webp": {
+    "width": 1170,
+    "height": 1463
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse_GalleryBackgroundImage.webp": {
+    "width": 1170,
+    "height": 1463
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse_bararea1.webp": {
+    "width": 1122,
+    "height": 1402
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse_goldenhour1-large.webp": {
+    "width": 2560,
+    "height": 3201
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse_goldenhour1.webp": {
+    "width": 1023,
+    "height": 1279
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse_loungearea1-large.webp": {
+    "width": 2560,
+    "height": 3201
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse_loungearea1.webp": {
+    "width": 1638,
+    "height": 2048
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse_loungearea2.webp": {
+    "width": 1638,
+    "height": 2048
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse_loungearea3.webp": {
+    "width": 1003,
+    "height": 1254
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse_loungearea4.webp": {
+    "width": 1640,
+    "height": 2048
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse_loungearea5.webp": {
+    "width": 1170,
+    "height": 1463
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse_loungearea6.webp": {
+    "width": 1170,
+    "height": 1463
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse_outsidelounge1-large.webp": {
+    "width": 2560,
+    "height": 3203
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse_outsidelounge1.webp": {
+    "width": 1637,
+    "height": 2048
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse_outsidelounge2.webp": {
+    "width": 1024,
+    "height": 1280
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse_outsidelounge3.webp": {
+    "width": 1170,
+    "height": 1463
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse_peopleinthelounge1.webp": {
+    "width": 1080,
+    "height": 1350
+  },
+  "/media/Gallery/SolTheBrewHouse/solthebrewhouse_peopleinthelounge2.webp": {
+    "width": 1122,
+    "height": 1402
+  },
+  "/media/food-drinks/drinks1.webp": {
+    "width": 1170,
+    "height": 1463
+  },
+  "/media/food-drinks/drinks2.webp": {
+    "width": 1023,
+    "height": 1279
+  },
+  "/media/food-drinks/drinks3.webp": {
+    "width": 1170,
+    "height": 1462
+  },
+  "/media/food-drinks/food1.webp": {
+    "width": 1024,
+    "height": 1280
+  },
+  "/media/food-drinks/food2.webp": {
+    "width": 1122,
+    "height": 1402
+  },
+  "/media/food-drinks/food3.webp": {
+    "width": 1170,
+    "height": 1462
+  },
+  "/media/food-drinks/food4.webp": {
+    "width": 1122,
+    "height": 1402
+  },
+  "/media/food-drinks/food5.webp": {
+    "width": 1170,
+    "height": 1170
+  },
+  "/media/food-drinks/food6.webp": {
+    "width": 1122,
+    "height": 1402
+  },
+  "/media/logo.webp": {
+    "width": 400,
+    "height": 400
+  },
+  "/media/menus/bar/1.avif": {
+    "width": 1190,
+    "height": 1683
+  },
+  "/media/menus/bar/2.avif": {
+    "width": 1190,
+    "height": 1683
+  },
+  "/media/menus/bar/3.avif": {
+    "width": 1190,
+    "height": 1683
+  },
+  "/media/menus/bar/4.avif": {
+    "width": 1190,
+    "height": 1683
+  },
+  "/media/menus/bar/5.avif": {
+    "width": 1190,
+    "height": 1683
+  },
+  "/media/menus/bar/6.avif": {
+    "width": 1190,
+    "height": 1683
+  },
+  "/media/menus/bar/7.avif": {
+    "width": 1190,
+    "height": 1683
+  },
+  "/media/menus/bar/8.avif": {
+    "width": 1190,
+    "height": 1683
+  },
+  "/media/menus/bar/9.avif": {
+    "width": 1190,
+    "height": 1683
+  },
+  "/media/menus/food/1.avif": {
+    "width": 1118,
+    "height": 1526
+  },
+  "/media/menus/food/10.avif": {
+    "width": 1190,
+    "height": 1683
+  },
+  "/media/menus/food/11.avif": {
+    "width": 1190,
+    "height": 1683
+  },
+  "/media/menus/food/12.avif": {
+    "width": 1190,
+    "height": 1683
+  },
+  "/media/menus/food/13.avif": {
+    "width": 1190,
+    "height": 1683
+  },
+  "/media/menus/food/2.avif": {
+    "width": 1118,
+    "height": 1526
+  },
+  "/media/menus/food/3.avif": {
+    "width": 1118,
+    "height": 1526
+  },
+  "/media/menus/food/4.avif": {
+    "width": 1118,
+    "height": 1526
+  },
+  "/media/menus/food/5.avif": {
+    "width": 1118,
+    "height": 1526
+  },
+  "/media/menus/food/6.avif": {
+    "width": 1118,
+    "height": 1526
+  },
+  "/media/menus/food/7.avif": {
+    "width": 1118,
+    "height": 1526
+  },
+  "/media/menus/food/8.avif": {
+    "width": 1118,
+    "height": 1526
+  },
+  "/media/menus/food/9.avif": {
+    "width": 1190,
+    "height": 1683
+  }
+}

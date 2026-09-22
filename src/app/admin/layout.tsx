@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -13,7 +14,7 @@ import {
   Settings,
   LogOut,
   Menu,
-  X
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
@@ -22,18 +23,42 @@ const NAV_GROUPS = [
   {
     label: "CAFE",
     items: [
-      { name: "Cafe Content", href: "/admin/content?experience=CAFE", icon: FileText },
-      { name: "Cafe Photos", href: "/admin/media?experience=CAFE", icon: ImageIcon },
-      { name: "Cafe Menu", href: "/admin/menu?experience=CAFE", icon: Utensils },
+      {
+        name: "Cafe Content",
+        href: "/admin/content?experience=CAFE",
+        icon: FileText,
+      },
+      {
+        name: "Cafe Photos",
+        href: "/admin/media?experience=CAFE",
+        icon: ImageIcon,
+      },
+      {
+        name: "Cafe Menu",
+        href: "/admin/menu?experience=CAFE",
+        icon: Utensils,
+      },
     ],
   },
   {
     label: "THE BREW HOUSE",
     items: [
-      { name: "Brew House Content", href: "/admin/content?experience=BREW_HOUSE", icon: FileText },
-      { name: "Beer Photos", href: "/admin/media?experience=BREW_HOUSE", icon: ImageIcon },
+      {
+        name: "Brew House Content",
+        href: "/admin/content?experience=BREW_HOUSE",
+        icon: FileText,
+      },
+      {
+        name: "Beer Photos",
+        href: "/admin/media?experience=BREW_HOUSE",
+        icon: ImageIcon,
+      },
       { name: "Brews", href: "/admin/brews", icon: Beer },
-      { name: "Brew House Menu", href: "/admin/menu?experience=BREW_HOUSE", icon: Utensils },
+      {
+        name: "Brew House Menu",
+        href: "/admin/menu?experience=BREW_HOUSE",
+        icon: Utensils,
+      },
     ],
   },
   {
@@ -47,7 +72,11 @@ const NAV_GROUPS = [
   },
 ];
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
@@ -57,11 +86,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <aside
         className={cn(
           "bg-zinc-900 text-zinc-400 w-64 flex-shrink-0 transition-all duration-300 border-r border-zinc-800 flex flex-col",
-          !isSidebarOpen && "-ml-64"
+          !isSidebarOpen && "-ml-64",
         )}
       >
         <div className="p-6 flex items-center justify-between border-b border-zinc-800">
-          <span className="text-white font-serif text-xl font-bold tracking-tight">SOL <span className="text-primary">ADMIN</span></span>
+          <Image
+            src="/media/logo.webp"
+            alt="Sol The Brew House admin"
+            width={64}
+            height={64}
+          />
           <button onClick={() => setIsSidebarOpen(false)} className="md:hidden">
             <X size={20} />
           </button>
@@ -75,7 +109,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </p>
               <div className="space-y-1">
                 {group.items.map((item) => {
-                  const isActive = pathname.startsWith(item.href.split('?')[0]);
+                  const isActive = pathname.startsWith(item.href.split("?")[0]);
                   return (
                     <Link
                       key={item.href}
@@ -84,7 +118,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         "flex items-center gap-3 px-3 py-2 rounded-md transition-colors text-sm font-medium",
                         isActive
                           ? "bg-primary text-primary-foreground"
-                          : "hover:bg-zinc-800 hover:text-zinc-200"
+                          : "hover:bg-zinc-800 hover:text-zinc-200",
                       )}
                     >
                       <item.icon size={18} />
@@ -113,21 +147,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <header className="h-16 bg-white border-b border-zinc-200 flex items-center justify-between px-6">
           <button
             onClick={() => setIsSidebarOpen(true)}
-            className={cn("p-2 text-zinc-600 hover:bg-zinc-100 rounded-md transition-colors", isSidebarOpen && "hidden")}
+            className={cn(
+              "p-2 text-zinc-600 hover:bg-zinc-100 rounded-md transition-colors",
+              isSidebarOpen && "hidden",
+            )}
           >
             <Menu size={20} />
           </button>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-zinc-500 font-medium">Admin Mode</span>
+            <span className="text-sm text-zinc-500 font-medium">
+              Admin Mode
+            </span>
             <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-xs font-bold">
               AD
             </div>
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-6">
-          {children}
-        </main>
+        <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>
     </div>
   );

@@ -1,50 +1,23 @@
-import { MetadataRoute } from 'next';
-
+import type { MetadataRoute } from "next";
+import { beers } from "@/lib/sol";
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://solbrewhouse.com';
-
+  const base = process.env.SITE_URL;
+  if (!base) return [];
   return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/food`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/brews`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/gallery`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/reservations`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-  ];
+    "",
+    "/about",
+    "/brew-house",
+    "/brews",
+    "/cafe",
+    "/food",
+    "/gallery",
+    "/culinary-collective-gallery",
+    "/contact",
+    "/reservations",
+    ...beers.map((b) => "/brews/" + b.slug),
+  ].map((path) => ({
+    url: base.replace(/\/$/, "") + path,
+    changeFrequency: "monthly",
+    priority: path ? 0.7 : 1,
+  }));
 }

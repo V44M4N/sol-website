@@ -1,53 +1,126 @@
 "use client";
-
-import React from "react";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/Button";
-import { Container } from "@/components/ui/Container";
-
-export const Hero = () => {
+import Image from "next/image";
+import Link from "next/link";
+import { Pause, Play, ArrowDown, Phone } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { business, venue, headerVideos } from "@/lib/sol";
+import { Reveal } from "./Reveal";
+export function Hero({
+  title = "Sol The Brew House",
+  subtitle = "Lounge by Day. Club by Night.",
+  compact = false,
+  videoEnabled = true,
+  image = venue("_bararea1"),
+}: {
+  title?: string;
+  subtitle?: string;
+  compact?: boolean;
+  videoEnabled?: boolean;
+  image?: string;
+}) {
+  const [clip, setClip] = useState(1);
+  const [playing, setPlaying] = useState(false);
+  const [ready, setReady] = useState(false);
+  const video = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const connection = (
+      navigator as Navigator & { connection?: { saveData?: boolean } }
+    ).connection;
+    const syncPlayback = () =>
+      setPlaying(videoEnabled && !preference.matches && !connection?.saveData);
+    preference.addEventListener("change", syncPlayback);
+    // Let the poster paint before starting optional background playback.
+    const frame = requestAnimationFrame(syncPlayback);
+    return () => {
+      cancelAnimationFrame(frame);
+      preference.removeEventListener("change", syncPlayback);
+    };
+  }, [videoEnabled]);
+  useEffect(() => {
+    if (!video.current) return;
+    if (playing) video.current.play().catch(() => setPlaying(false));
+    else video.current.pause();
+  }, [playing, clip]);
+  const next = () => {
+    setReady(false);
+    setClip((n) => (n % headerVideos.length) + 1);
+  };
   return (
-    <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
-      {/* Background Media - Placeholder for Cinematic Video/Image */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-black/50 z-10" />
-        <img
-          src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=2070"
-          alt="Sol The Brew House Cinematic View"
-          className="w-full h-full object-cover scale-105 animate-slow-zoom"
+    <section className={`sol-hero ${compact ? "compact" : ""}`}>
+      <Image
+        src={image}
+        alt="The bar and brewing tanks at Sol The Brew House"
+        fill
+        priority
+        sizes="100vw"
+        className="hero-photo"
+      />
+      {(playing || ready) && (
+        <video
+          ref={video}
+          key={clip}
+          src={headerVideos[clip - 1]}
+          muted
+          playsInline
+          autoPlay={playing}
+          preload="metadata"
+          onPlaying={() => setReady(true)}
+          onEnded={next}
+          onError={() => {
+            setReady(false);
+            setPlaying(false);
+          }}
+          className={`hero-video ${ready ? "is-ready" : ""}`}
+          aria-hidden="true"
         />
-      </div>
-
-      <div className="relative z-20 text-center px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex flex-col items-center"
-        >
-          <h2 className="text-primary uppercase tracking-[0.3em] text-sm md:text-base font-medium mb-4">
-            Sol
-          </h2>
-          <h1 className="text-5xl md:text-8xl font-serif text-foreground mb-6 tracking-tight">
-            The Brew House
+      )}
+      <div className="hero-shade" />
+      <div className="hero-copy">
+        <Reveal>
+          <p className="eyebrow">Craft brews. Shimla views.</p>
+          <h1>
+            {title === "Sol The Brew House" ? (
+              <>
+                <span className="sol-word">SOL</span>
+                <span className="hero-name">The Brew House</span>
+              </>
+            ) : (
+              title
+            )}
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 font-light italic tracking-wide">
-            Lounge by Day. Club by Night.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="primary" size="lg" className="rounded-none">
-              Book a Table
-            </Button>
-            <Button variant="outline" size="lg" className="rounded-none">
-              Explore Sol
-            </Button>
+          <p className="hero-subtitle">{subtitle}</p>
+          <div className="actions">
+            <a className="action primary" href={business.telephone}>
+              <Phone size={17} /> Call to book
+            </a>
+            <Link className="action secondary" href="/brews">
+              Discover the brews
+            </Link>
           </div>
-        </motion.div>
+        </Reveal>
       </div>
-
-      {/* Bottom Gradient for transition */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent z-10" />
+      <div className="hero-bottom">
+        <span>Hotel Combermere / The Mall, Shimla</span>
+        <a
+          href={compact ? "#page-content" : "#the-craft"}
+          aria-label="Explore Sol"
+        >
+          <ArrowDown size={20} />
+        </a>
+        {videoEnabled && (
+          <button
+            className="icon-button"
+            title={playing ? "Pause background video" : "Play background video"}
+            aria-label={
+              playing ? "Pause background video" : "Play background video"
+            }
+            onClick={() => setPlaying(!playing)}
+          >
+            {playing ? <Pause size={18} /> : <Play size={18} />}
+          </button>
+        )}
+      </div>
     </section>
   );
-};
+}

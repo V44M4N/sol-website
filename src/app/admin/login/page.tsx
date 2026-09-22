@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
@@ -18,13 +19,23 @@ export default function AdminLogin() {
     <div className="min-h-screen bg-zinc-100 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white border border-zinc-200 shadow-sm p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-serif font-bold mb-2">SOL <span className="text-primary">ADMIN</span></h1>
-          <p className="text-zinc-500 text-sm">Enter your credentials to access the dashboard</p>
+          <Image
+            src="/media/logo.webp"
+            alt="Sol The Brew House admin"
+            width={96}
+            height={96}
+            className="mx-auto mb-4"
+          />
+          <p className="text-zinc-500 text-sm">
+            Enter your credentials to access the dashboard
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <label className="text-xs uppercase tracking-widest text-zinc-500 font-medium">Email Address</label>
+            <label className="text-xs uppercase tracking-widest text-zinc-500 font-medium">
+              Email Address
+            </label>
             <input
               type="email"
               required
@@ -35,7 +46,9 @@ export default function AdminLogin() {
             />
           </div>
           <div className="space-y-2">
-            <label className="text-xs uppercase tracking-widest text-zinc-500 font-medium">Password</label>
+            <label className="text-xs uppercase tracking-widest text-zinc-500 font-medium">
+              Password
+            </label>
             <input
               type="password"
               required
@@ -51,7 +64,10 @@ export default function AdminLogin() {
         </form>
 
         <div className="mt-8 text-center">
-          <Link href="/" className="text-xs text-zinc-400 hover:text-zinc-600 transition-colors uppercase tracking-widest">
+          <Link
+            href="/"
+            className="text-xs text-zinc-400 hover:text-zinc-600 transition-colors uppercase tracking-widest"
+          >
             Return to Public Site
           </Link>
         </div>

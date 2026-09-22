@@ -1,77 +1,44 @@
-# Sol The Brew House - Production Website
+# Sol The Brew House
 
-A premium, cinematic digital experience for Sol The Brew House, Shimla. This website is designed to communicate the transition from a serene lounge by day to a high-energy club by night.
+Next.js 16, React 19, TypeScript, Tailwind CSS and Framer Motion.
 
-## 🚀 Tech Stack
+## Local development
 
-- **Frontend**: Next.js 15 (App Router), TypeScript, Tailwind CSS
-- **Animations**: Framer Motion
-- **Database**: MySQL via Prisma ORM
-- **Icons**: Lucide React
-- **Deployment**: Optimized for Vercel
+Run `npm install`, then `npm run dev -- --port 58994`.
+Open http://localhost:58994. Validate with `npx tsc --noEmit` and `npm run build`.
+For a production server, run `npm run build` followed by `npm start`.
 
-## 🎨 Design System
+## Content and assets
 
-### Color Palette
-- **Charcoal Black** (`#0a0a0a`): Primary background, creating a sophisticated, dark-mode aesthetic.
-- **Warm Cream** (`#fdfbf7`): Primary foreground/text, providing a softer, more premium feel than pure white.
-- **Amber/Bronze** (`#c5a059`): Brand accent color used for CTAs, highlights, and primary branding.
-- **Himalayan Slate** (`#4a5568`): Secondary accent for muted elements and borders.
+- Business details, supplied beer descriptions and gallery references: `src/lib/sol.ts`.
+- Homepage sequence: `src/app/page.tsx`.
+- Design styles: `src/app/globals.css`.
+- Original assets remain in `SOL photos&videos/`.
+- Browser-ready assets are in `public/media/`. Public URLs start with `/media/`.
+- New PNG beer images are served as high-quality WebP files with a `-v2` suffix. Venue photos retain up to 2000px of source resolution. Day/golden-hour/night backgrounds have lightly sharpened, 2560px upscaled versions.
+- Six header clips follow the source filenames: `solthebrewhouse_startingvideo`, `solthebrewhouse_video1` through `video4`, then `solthebrewhouse_addinthelastvideo`. Browser copies preserve those stems and use H.264 MP4, muted playback, fast-start metadata, and a 3 Mbps bitrate cap.
+- The venue gallery uses `solthebrewhouse_GalleryBackgroundImage.jpg` and separate Brew House and Cafe Sol collections. Photo dimensions in `src/lib/media-dimensions.json` preserve original proportions without cropping.
+- Food and drinks live on `/culinary-collective-gallery`, titled Culinary Collective Gallery. Its five background videos advance on playback completion and repeat the playlist, independent of scrolling. Reduced-motion and data-saving preferences use the static photo; offscreen playback pauses.
+- Originals remain in `SOL photos&videos/`; there are no separate top-level Photos/ or Videos/ folders in this checkout. Converted video copies in `public/media/videos/` preserve the source filename stems; original extensions are retained in the source folder. Older derived video files are not referenced by the current playlists.
+- Bar menu: `public/media/menus/bar/1.avif` through `9.avif`.
+- Food menu: `public/media/menus/food/1.avif` through `13.avif`.
+- Menus display the supplied original scans, preserving prices and wording, with an enlarge/zoom viewer. They are not a transcribed or searchable menu database.
+- The promotional 1+1 video is intentionally unpublished because its validity dates and terms have not been confirmed.
 
-### Typography
-- **Headings**: Playfair Display (Elegant Serif)
-- **Body**: Montserrat (Clean Modern Sans-Serif)
+The homepage prioritizes the Brew House, then the atmosphere, Cafe Sol and the day-to-night experience. Four beer detail routes live under `/brews/[slug]`. Legacy menu routes redirect to `/food`.
 
-## 🛠️ Key Features
+## Reservations and contact
 
-### Public Experience
-- **Cinematic Homepage**: Storytelling flow with scroll-based animations and a Day $\rightarrow$ Night visual transition.
-- **Dynamic Menu**: High-end editorial presentation of Food and Craft Brews.
-- **Immersive Gallery**: Masonry layout showcasing the venue's atmosphere.
-- **Step-by-Step Reservations**: A friction-less booking flow with real-time confirmation.
+Reservations are now handled by reception at +91 80913 96732. All booking calls to action use `tel:+918091396732`. The website does not create or confirm reservations. Contact details were checked against the existing Sol Google Site; the map uses the supplied Cafe Sol location at Hotel Combermere.
 
-### Admin CMS
-- **Content Manager**: Drag-and-drop reordering of homepage sections.
-- **Media Library**: Centralized asset management for all images and videos.
-- **Catalog Management**: Full CRUD for Menu items and House Brews.
-- **Booking Engine**: Management interface for pending and confirmed reservations.
-- **Site Settings**: Centralized control for business hours, contact info, and SEO.
+## Deployment settings
 
-## 📦 Installation & Setup
+Set `SITE_URL` to the approved production origin to populate the sitemap. No domain is assumed. Google Maps uses a public embed and needs no API key. Local media requires no external storage credentials.
 
-1. **Clone the repository**
-   \`\`\`bash
-   git clone <repo-url>
-   cd sol-website
-   \`\`\`
+## Admin status
 
-2. **Install dependencies**
-   \`\`\`bash
-   npm install
-   \`\`\`
+The inherited admin interfaces remain prototypes using client-side state. Authentication, database persistence and CMS publishing are not implemented. Public content currently comes from `src/lib/sol.ts` and local assets; admin edits do not publish changes. Do not expose these admin interfaces as a production management system. The Prisma schema remains a foundation only.
 
-3. **Environment Configuration**
-   Copy `.env.example` to `.env` and update your credentials:
-   \`\`\`env
-   DATABASE_URL="mysql://user:password@localhost:3306/sol_db"
-   NEXTAUTH_SECRET="your-secret"
-   NEXTAUTH_URL="http://localhost:3000"
-   \`\`\`
+## Verification
 
-4. **Database Setup**
-   \`\`\`bash
-   npx prisma migrate dev --name init
-   \`\`\`
-
-5. **Run the Development Server**
-   \`\`\`bash
-   npm run dev
-   \`\`\`
-
-## 📁 Project Structure
-- \`/app\`: Next.js App Router (Public & Admin routes).
-- \`/components\`: Atomic UI components, Layouts, and Feature blocks.
-- \`/lib\`: Shared utilities and Prisma client.
-- \`/prisma\`: Database schema and migrations.
-- \`/public\`: Static assets and robots.txt.
-- \`/styles\`: Global CSS and design tokens.
+The public pages were checked in Chromium and WebKit, including video playback, mobile navigation, gallery lightbox keyboard controls, menu switching, map loading, and reduced-motion behavior. Layouts were checked at 320, 375, 390, 414, 768, 1024 and 1440 pixels. Real-device Safari testing is still recommended before launch.

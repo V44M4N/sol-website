@@ -14,10 +14,16 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: "Sol The Brew House | Lounge by Day. Club by Night.",
-  description: "Experience the most stunning brew house in Shimla. Craft brews, premium lounge, and vibrant nightlife above the city.",
+  description:
+    "Discover Sol The Brew House at Hotel Combermere, Shimla. In-house brews, bar and food menus, Cafe Sol and views. Call +91 80913 96732 to book.",
+  icons: { icon: "/media/logo.webp", apple: "/media/logo.webp" },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="en"
